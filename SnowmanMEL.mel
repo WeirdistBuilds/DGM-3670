@@ -1,0 +1,48 @@
+polySphere -radius 3 -subdivisionsX 12 -subdivisionsY 12 -axis 0 1 0 -createUVs 2 -constructionHistory 1 -name "Bottom";
+move -r 0 -3 0 Bottom.scalePivot Bottom.rotatePivot ;
+move -rotatePivotRelative -moveY 0 ;
+
+polySphere -radius 2 -subdivisionsX 12 -subdivisionsY 12 -axis 0 1 0 -createUVs 2 -constructionHistory 1 -name "Middle";
+move -r 0 -2 0 Middle.scalePivot Middle.rotatePivot ;
+move -r 0 7 0 "Middle";
+
+polySphere -radius 1 -subdivisionsX 12 -subdivisionsY 12 -axis 0 1 0 -createUVs 2 -constructionHistory 1 -name "Top";
+move -relative 0 -1 0 Top.scalePivot Top.rotatePivot ;
+move -relative 0 9.5 0 "Top";
+
+polyCone -radius .2 -height 2 -subdivisionsX 12 -subdivisionsY 1 -subdivisionsZ 0 -axis -1 0 0 -roundCap 0 -createUVs 3 -constructionHistory 1 -name "Carrot";
+move -relative -1.5 9.5 0;
+
+polySphere -radius .2 -subdivisionsX 6 -subdivisionsY 6 -axis 0 1 0 -createUVs 2 -constructionHistory 1 -name "Eye_L";
+move -relative -0.7 10 0.5 "Eye_L";
+
+polySphere -radius .2 -subdivisionsX 6 -subdivisionsY 6 -axis 0 1 0 -createUVs 2 -constructionHistory 1 -name "Eye_R";
+move -relative -0.7 10 -0.5 "Eye_R";
+
+polySphere -radius .2 -subdivisionsX 6 -subdivisionsY 6 -axis 0 1 0 -createUVs 2 -constructionHistory 1 -name "Button1";
+move -relative -1.8 7.7 0 "Button1";
+
+duplicate -returnRootsOnly;
+duplicate -returnRootsOnly;
+move -relative 0.25 -2 0 "Button2";
+move -relative -1 -3.8 0 "Button3";
+
+polyCube -width .2 -height .2 -depth 1 -subdivisionsX 1 -subdivisionsY 1 -subdivisionsZ 1 -axis 0 1 0 -createUVs 4 -constructionHistory 1 -name "Arm_L";
+move -relative 0 8 2 "Arm_L";
+polyExtrudeFacet -constructionHistory 1 -keepFacesTogether 1 -pivotX 0 -pivotY 8 -pivotZ 2.5 -divisions 1 -twist 1 -taper 1 -off 0 -thickness 0 -smoothingAngle 30 Arm_L.f[0];
+setAttr "polyExtrudeFace1.localTranslate" -type double3 0 0.5 1.2 ;
+
+polyCube -width .2 -height .2 -depth 1 -subdivisionsX 1 -subdivisionsY 1 -subdivisionsZ 1 -axis 0 1 0 -createUVs 4 -constructionHistory 1 -name "Arm_R";
+move -relative 0 8 -2 "Arm_R";
+polyExtrudeFacet -constructionHistory 1 -keepFacesTogether 1 -pivotX 0 -pivotY 8 -pivotZ -2.5 -divisions 1 -twist 1 -taper 1 -off 0 -thickness 0 -smoothingAngle 30 Arm_R.f[2];
+setAttr "polyExtrudeFace2.localTranslate" -type double3 0 0.2 1.2 ;
+
+polySoftEdge -angle 180 -constructionHistory 1 Bottom;
+polySoftEdge -angle 180 -constructionHistory 1 Middle;
+polySoftEdge -angle 180 -constructionHistory 1 Top;
+polySoftEdge -angle 180 -constructionHistory 1 Eye_L;
+polySoftEdge -angle 180 -constructionHistory 1 Eye_R;
+polySoftEdge -angle 180 -constructionHistory 1 Button1;
+polySoftEdge -angle 180 -constructionHistory 1 Button2;
+polySoftEdge -angle 180 -constructionHistory 1 Button3;
+select -clear  ;
