@@ -1,0 +1,57 @@
+polySphere -radius 1 -name "Dude";
+
+int $name;
+$name = "Ryley";
+
+// can't redefine datatype in global space
+// global = public
+
+{
+string $age;
+$age = 243;
+print ($age);
+}
+(you can change the scope of a variable within curly braces because it's a new variable)
+
+
+in c# -> public string[] $daddy;
+in mel -> global string $daddy[];
+
+print all names -> print ($daddy);
+
+string $age[];
+$age[0] = "Dude";
+$age[1] = "Bro";
+...
+
+print $age;
+(this prints all on a different line)
+
+
+RETURNING STORING COMBINING
+polySphere returns string[]
+we need the pSphere1 bit
+
+////
+
+int $radius = 1;
+string $obj[];
+string $objects[];
+
+{
+$obj = `polySphere -radius $radius`;  //must use backtick thing (nonshifted tilde)
+print $obj; //this prints the object name and the node name
+
+move -absolute -worldSpace 0 ($radius * 2) 0 $obj[0];
+$radius++;
+$objects[size($objects)] = $obj[0]; // the size of the array is one more than the last element
+
+//this needs to be duplicated several times to do the fun thing
+}
+
+/////
+
+polyUnite (and everything else) uses the name of the object
+nodes are only for editing the input stuff (like divisions or whatever)
+
+
