@@ -1,0 +1,18 @@
+int $width = 5;
+int $stairnum;
+string $obj[];
+string $objects[];
+clear $objects;
+
+for($i = 0; $i < 8; $i++) {
+$obj = `polyCube -w $width -h .2 -d 1 -sx 1 -sy 1 -sz 1 -ax 0 1 0 -cuv 4 -ch 1 -name "CurrentStair"`;
+move -r (0 * $stairnum) (0.5 * $stairnum) (-1 * $stairnum) $obj[0];
+$objects[size($objects)] = $obj[0]; $stairnum++;
+polyExtrudeFacet -constructionHistory 1 -divisions 1 -translateX 0.2 CurrentStair.f[4];
+polyExtrudeFacet -constructionHistory 1 -divisions 1 -translateX -0.2 CurrentStair.f[5];
+polyExtrudeFacet -constructionHistory 1 -divisions 1 -translateY 0.5 CurrentStair.f[8] CurrentStair.f[12];
+move -r 0 0.5 0 CurrentStair.e[35] CurrentStair.e[40];
+rename CurrentStair "Stair#";
+}
+
+print $objects;
