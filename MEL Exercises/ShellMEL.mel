@@ -1,0 +1,31 @@
+int $sections = 30;
+int $shellnum = 0;
+string $obj[];
+string $objects[];
+clear $objects;
+clear $obj;
+
+for($i = 0; $i < $sections; $i++)
+{
+$obj = `polyCube -w 1 -h 0.1 -d .5 -sx 5 -sy 1 -sz 1 -ax 0 1 0 -cuv 4 -ch 1 -name "CurrentShell"`;
+move -r 0 -1 0 CurrentShell.f[7] CurrentShell.f[17];
+scale -r -p 0cm -1cm 0cm 2 1 1 CurrentShell.f[7] CurrentShell.f[17];
+move -r 0 1 0 CurrentShell.f[20:21];
+scale -r -p 0cm 1cm 0cm 0.75 1 0.25 CurrentShell.f[20:21];
+scale -r -p 0cm -1cm 0cm 1 1 2 CurrentShell.f[2] CurrentShell.f[12];
+move -r 0 1 0 CurrentShell.scalePivot CurrentShell.rotatePivot ;
+$shellnum++;
+scale -r ($shellnum / 2.71828) ($shellnum / 2.71828) ($shellnum / 2.71828) ;
+rotate -r -os -fo ($shellnum * -27.1828) 0 0 ;
+rename CurrentShell "Shell#";
+$objects[size($objects)] = ("Shell" + $shellnum);
+}
+print $objects;
+
+$obj = `polyUnite $objects`;
+DeleteHistory $obj[0];
+CenterPivot $obj[0];
+
+group -name "Geometry" $obj[0];
+
+rename $obj[0]("Nautilus_" + $sections + "_Sections");
