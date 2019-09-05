@@ -1,0 +1,45 @@
+for PolyExtrude, you can concatenate the command as a string
+string $string = $obj[0] + ".f[27]";
+
+PolyExtrudeFacet ...  $string;
+
+This is bad:
+$obj = "pSphere1";
+rename $obj "Ball";
+print $obj;
+
+This is good:
+$obj = "pSphere1";
+$obj = `rename $obj "Ball"`;
+print $obj;
+
+When two objects have the same name in different hierarchies, MEL returns the full path
+
+| <- this equals the parent. All objects actually start with | because that means world.
+
+eg.
+|Group1|Ball
+|Group2|Ball
+
+Error messages terminates the code run (nothing after the error runs)
+
+Duplicate returns an array of the names of objects duplicated
+
+IMPORTANT COMMAND
+ls - returns selection as a string array of objects
+
+string $objects[];
+string $sel[] = `ls -sl`;
+string $obj[] = `polyUnite -ch 1 -mergeUVSets 1 -centerPivot -name $sel`;
+$obj[0] = `rename $obj[0] "Stair#"`;
+$objects[size($objects)] = $obj[0];
+
+//forloop part
+$obj = `duplicate -rr ($object[size($objects] -1)`;
+$objects[size($objects)] = $obj[0];
+move -r -ws 0 2 0 $obj[0];
+rotate -r 0 15 0 $obj[0];
+
+
+Thursday(29th) - if, for, while loops
+Tuesday(3rd) - functions (in mel - procedures)
