@@ -1,0 +1,20 @@
+string $insults1[] = {"artless", "base-court", "bawdy", "bat-fowling", "beslubbering", "beef-witted", "bootless", "beetle-headed", "churlish", "boil-brained", "cockered", "clapper-clawed", "clouted", "clay-brained", "craven", "common-kissing", "currish", "crook-pated", "dankish", "dismal-dreaming", "dissembling", "dizzy-eyed", "droning", "doghearted", "errant", "dread-bolted", "fawning", "earth-vexing", "fobbing", "elf-skinned", "froward", "fat-kidneyed", "frothy", "fen-sucked", "gleeking", "flap-mouthed", "goatish", "fly-bitten", "gorbellied", "folly-fallen", "impertinent", "fool-born", "infectious", "full-gorged", "jarring", "guts-griping", "loggerheaded", "half-faced", "lumpish", "hasty-witted", "mammering", "hedge-born", "mangled", "hell-hated", "mewling", "idle-headed", "paunchy", "ill-breeding", "pribbling", "ill-nurtured", "puking", "knotty-pated", "puny", "milk-livered", "qualling", "motley-minded", "rank", "onion-eyed", "reeky", "plume-plucked", "roguish", "pottle-deep", "ruttish", "pox-marked", "saucy", "reeling-ripe", "spleeny", "rough-hewn", "spongy", "rude-growing", "surly", "rump-fed", "tottering", "shard-borne", "unmuzzled", "sheep-biting", "vain", "spur-galled", "venomed", "swag-bellied", "villainous", "tardy-gaited", "warped", "tickle-brained", "wayward", "toad-spotted", "weedy", "unchin-snouted", "yeasty", "weather-bitten"};
+string $insults2[] = {"apple-john", "baggage", "barnacle", "bladder", "boar-pig", "bugbear", "bum-bailey", "canker-blossom", "clack-dish", "clotpole", "coxcomb", "codpiece", "death-token", "dewberry", "flap-dragon", "flax-wench", "flirt-gill", "foot-licker", "fustilarian", "giglet", "gudgeon", "haggard", "harpy", "hedge-pig", "horn-beast", "hugger-mugger", "joithead", "lewdster", "lout", "maggot-pie", "malt-worm", "mammet", "measle", "minnow", "miscreant", "moldwarp", "mumble-news", "nut-hook", "pigeon-egg", "pignut", "puttock", "pumpion", "ratsbane", "scut", "skainsmate", "strumpet", "varlot", "vassal", "whey-face", "wagtail"};
+
+proc InsultGenerator(string $insults1[], string $insults2[])
+{
+	int $size1 = `size($insults1)`;
+	int $size2 = `size($insults2)`;
+	float $randNum1 = `rand $size1`;
+	float $randNum2 = `rand $size1`;
+	float $randNum3 = `rand $size2`;
+	int $index1 = `floor $randNum1`;
+	int $index2 = `floor $randNum2`;
+	int $index3 = `floor $randNum3`;
+
+	string $finalInsult = ("Thou art a " + $insults1[$index1] + ", " + $insults1[$index2] + " " + $insults2[$index3] + "!");
+	
+	print $finalInsult;
+}
+
+InsultGenerator($insults1, $insults2);
