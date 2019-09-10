@@ -1,0 +1,56 @@
+proc MushroomSpawner(int $Amount, float $MoveRange, float $ScaleLower, float $ScaleUpper)
+{
+	float $CurrentPosition[];
+	int $MushNum = 1;
+	float $ScaleAdj;
+	float $MoveAdjX;
+	float $MoveAdjZ;
+	float $X;
+	float $Y;
+	float $Z;
+	string $Objects[];
+	string $Object[];
+	clear $Objects;
+	
+	string $Selection[] = `ls -sl`;
+	string $Polygons[] = `filterExpand -sm 12 $Selection`;
+	if (size($Polygons) > 1)
+	{
+		$Object = `polyUnite $Polygons`;
+	}
+	else
+	{
+		$Object = $Polygons;
+	}
+	rename $Object[0] ("Mushroom_" + $MushNum);
+	
+	$Objects[0] = ("Mushroom_" + $MushNum);
+	DeleteHistory $Object[0];
+	xform -ws -pivots 0 0 0 ("Mushroom_" + $MushNum);
+	
+	for ($i = 0; $i < $Amount; $i++)
+	{
+		$Object = `duplicate ("Mushroom_" + $MushNum)`;
+		rename $Object[0]("CurrentMushroom");
+				
+		$CurrentPosition = `xform -worldSpace -query -translation CurrentMushroom`;
+		$MoveAdjX = `rand (-1 * $MoveRange) ($MoveRange)`;
+		$MoveAdjZ = `rand (-1 * $MoveRange) ($MoveRange)`;
+		$X = $CurrentPosition[0] + $MoveAdjX;
+		$Y = $CurrentPosition[1];
+		$Z = $CurrentPosition[2] + $MoveAdjZ;
+		
+		$ScaleAdj = `rand $ScaleLower $ScaleUpper`;
+		
+		scale $ScaleAdj $ScaleAdj $ScaleAdj CurrentMushroom;
+		move -ws $X $Y $Z CurrentMushroom;
+		
+		$MushNum++;
+		rename CurrentMushroom ("Mushroom_" + $MushNum);
+		$Objects[size($Objects)] = ("Mushroom_" + $MushNum);
+	}
+	
+	group -name "Geometry" $Objects;
+}
+
+MushroomSpawner(200, 10, .5, 2);
