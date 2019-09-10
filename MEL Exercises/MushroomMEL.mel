@@ -1,4 +1,4 @@
-proc MushroomSpawner(int $Amount, float $MoveRange, float $ScaleLower, float $ScaleUpper)
+proc MushroomSpawner(int $Amount, int $GrowFlag, float $MoveRange, float $ScaleLower, float $ScaleUpper)
 {
 	float $CurrentPosition[];
 	int $MushNum = 1;
@@ -22,35 +22,57 @@ proc MushroomSpawner(int $Amount, float $MoveRange, float $ScaleLower, float $Sc
 	{
 		$Object = $Polygons;
 	}
-	rename $Object[0] ("Mushroom_" + $MushNum);
 	
+	rename $Object[0] ("Mushroom_" + $MushNum);
 	$Objects[0] = ("Mushroom_" + $MushNum);
 	DeleteHistory $Object[0];
 	xform -ws -pivots 0 0 0 ("Mushroom_" + $MushNum);
 	
-	for ($i = 0; $i < $Amount; $i++)
+	if ($GrowFlag > 0)
 	{
-		$Object = `duplicate ("Mushroom_" + $MushNum)`;
-		rename $Object[0]("CurrentMushroom");
-				
-		$CurrentPosition = `xform -worldSpace -query -translation CurrentMushroom`;
-		$MoveAdjX = `rand (-1 * $MoveRange) ($MoveRange)`;
-		$MoveAdjZ = `rand (-1 * $MoveRange) ($MoveRange)`;
-		$X = $CurrentPosition[0] + $MoveAdjX;
-		$Y = $CurrentPosition[1];
-		$Z = $CurrentPosition[2] + $MoveAdjZ;
-		
-		$ScaleAdj = `rand $ScaleLower $ScaleUpper`;
-		
-		scale $ScaleAdj $ScaleAdj $ScaleAdj CurrentMushroom;
-		move -ws $X $Y $Z CurrentMushroom;
-		
-		$MushNum++;
-		rename CurrentMushroom ("Mushroom_" + $MushNum);
-		$Objects[size($Objects)] = ("Mushroom_" + $MushNum);
+		for ($i = 0; $i < $Amount; $i++)
+		{
+			$Object = `duplicate ("Mushroom_" + $MushNum)`;
+			rename $Object[0]("CurrentMushroom");
+					
+			$CurrentPosition = `xform -worldSpace -query -translation CurrentMushroom`;
+			$MoveAdjX = `rand (-1 * $MoveRange) ($MoveRange)`;
+			$MoveAdjZ = `rand (-1 * $MoveRange) ($MoveRange)`;
+			$X = $CurrentPosition[0] + $MoveAdjX;
+			$Y = $CurrentPosition[1];
+			$Z = $CurrentPosition[2] + $MoveAdjZ;
+			
+			$ScaleAdj = `rand $ScaleLower $ScaleUpper`;
+			
+			scale $ScaleAdj $ScaleAdj $ScaleAdj CurrentMushroom;
+			move -ws $X $Y $Z CurrentMushroom;
+			
+			$MushNum++;
+			rename CurrentMushroom ("Mushroom_" + $MushNum);
+			$Objects[size($Objects)] = ("Mushroom_" + $MushNum);
+		}
+	}
+	else
+	{
+		for ($i = 0; $i < $Amount; $i++)
+		{
+			$Object = `duplicate ("Mushroom_" + $MushNum)`;
+			rename $Object[0]("CurrentMushroom");
+					
+			$X = `rand (-1 * $MoveRange) ($MoveRange)`;
+			$Z = `rand (-1 * $MoveRange) ($MoveRange)`;
+			$ScaleAdj = `rand $ScaleLower $ScaleUpper`;
+			
+			scale $ScaleAdj $ScaleAdj $ScaleAdj CurrentMushroom;
+			move -ws $X 0 $Z CurrentMushroom;
+			
+			$MushNum++;
+			rename CurrentMushroom ("Mushroom_" + $MushNum);
+			$Objects[size($Objects)] = ("Mushroom_" + $MushNum);
+		}
 	}
 	
 	group -name "Geometry" $Objects;
 }
 
-MushroomSpawner(200, 10, .5, 2);
+MushroomSpawner(200, 0, 10, .5, 2);
