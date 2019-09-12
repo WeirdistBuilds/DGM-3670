@@ -1,0 +1,89 @@
+proc DupeRenamer (string $prefix, string $suffix)
+
+
+get selection
+
+in a for loop:
+	get first element of each selection
+	add each element to new array
+
+
+in the for loop:
+	get suffix
+
+	get int
+
+	check if new array index <10
+		yes - add 0
+	get prefix
+
+	concatenate
+
+	rename
+
+
+
+
+
+
+
+string $to[] = {"a", "b", "c"};
+string $from[] = {"d", "e", "f"};
+appendStringArray($to, $from, 2);
+	// $to == {"a", "b", "c", "d", "e"};
+	
+	
+	// selection is something called Ball_Geo
+string $sels[] = `ls -sl`;	
+
+endString($sels[0], 4);
+
+	// result: _Geo
+	
+
+	
+	
+	
+string $sel[] = `ls -sl`;
+
+endsWith($sel[0], "_Geo")
+
+	// if it does end in _Geo, returns 1, else returns 0
+
+
+
+
+string $names1[] = {"Dad", "OtherDad", "YourDad"};
+string $names2[] = {"Mom", "OtherMom", "YourMom"};
+
+format -stringArg $names1[0] -stringArg $names2[0] "Our names are ^1s and ^2s and ^2s!";
+
+
+
+size("Hello") returns 5
+
+	// startsWith and startString does the same stuff as endsWith and endString
+
+strip "   hi   ";
+	// returns "hi"
+	
+
+	
+	
+	
+	
+string $test = "Hello,my,name,is,Carl";
+
+string $tokens[];
+tokenize $test "," $tokens;
+print $tokens;
+
+
+string $test = "L_Arm_##_Geo";
+
+string $tokens[];
+tokenize $test "#" $tokens;
+print $tokens;
+
+
+	// to get how many ## you'd add both tokens indices size, and subtract it from the total string size
