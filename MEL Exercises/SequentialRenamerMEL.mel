@@ -1,0 +1,44 @@
+proc SequentialRenamer(string $Format)
+{
+int $ArgLength;
+string $Prefix;
+string $Suffix;
+int $TokensLength;
+int $NumLength;
+string $Tokens[];
+
+string $CurrentNumber;
+string $CurrentName;
+string $LoopNumber;
+string $ZeroString;
+int $CurrentZeros;
+
+string $Selection[] = `ls -sl`;
+string $Objects[] = `filterExpand -sm 12 $Selection`;
+
+$ArgLength = `size($Format)`;
+tokenize $Format "#" $Tokens;
+$Prefix = $Tokens[0];
+$Suffix = $Tokens[1];
+$TokensLength = size($Prefix) + size($Suffix);
+$NumLength = $ArgLength - $TokensLength;
+
+	for($i = 0; $i < size($Objects); $i++)
+	{
+		$CurrentName = "";
+		$ZeroString = "";
+		$LoopNumber = $i + 1;
+		$CurrentZeros = $NumLength - size($LoopNumber);
+			for($j = 0; $j < $CurrentZeros; $j++)
+			{
+				$ZeroString += "0";
+			}
+		$CurrentNumber = $ZeroString + $LoopNumber;
+		$CurrentName = ($Prefix + $CurrentNumber + $Suffix);
+		rename $Objects[$i] $CurrentName;
+		$ZeroString = "";
+	}
+
+}
+
+SequentialRenamer("Leg_###_Jnt")
