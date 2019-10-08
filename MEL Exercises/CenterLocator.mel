@@ -1,0 +1,46 @@
+Exercise
+
+Use MEL to create a function that builds a locator at the center of the current selection(s).  Use parameters and arguments to accomplish specific functionality as outlined:
+
+    Create a locator at the combined center of all selected objects.
+    Create a locator at the center of each individual selection. This includes objects as well as components, joints, clusters, etc.
+    Include an optional parameter to match the locator orientation to the respective selection.
+
+Objectives
+
+    Familiarity with the xform and spaceLocator commands.
+    Familiarity and differences between world space and relative space.
+    Continued used of functions and parameters.
+    Problem-solving unique coding solutions to a visual process.
+
+
+xform
+
+spaceLocator
+	(This is the command for creating a locator ie spaceLocator -p 0 0 0;)
+
+bounding box
+
+midpoint formula
+
+getAttr
+
+setAttr
+
+
+get selection
+add each selected object to an array
+
+get xform boundingbox to get min and max values
+Add these vectors together, divide by 2
+
+
+
+or
+
+
+
+get selection
+get bounding box for each object
+get min and max values, add together, divide by 2
+place locator at each object
