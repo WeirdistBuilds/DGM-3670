@@ -83,18 +83,46 @@ proc float Median(float $median[])
 	return $result;
 }
 
-proc float Mode(float $mode[])
+proc string Mode(float $mode[])
 {
-	float $sorted[] = `sort $mode`;
-	int $checkindex;
-	
-	for($i = 0; $i < size($sorted); $i++)
+int $count = 1;
+int $countMode = 1;
+string $result;
+
+float $sorted[] = `sort $mode`;
+float $number = $sorted[0];
+float $mode = $number;
+
+for ($i = 0; $i < size($sorted); $i++)
+{
+	if ($sorted[i] == $number) 
 	{
-		
+		$count++;
+	}
+	else
+	{
+		if ($count > $countMode) 
+			{
+				$countMode = $count;
+				$mode = $number;
+			}
+		$count = 1;
+		$number = $sorted[$i];
 	}
 }
 
-float $nums[] = {1,2,3,4,5};
+if ($count == 1)
+{
+	$result = "There is more than one mode, or there is no mode.";
+}
+else
+{
+	$result = "The mode is " + $number;
+}
+return $result;	
+}
+
+float $nums[] = {1,2,3,4,5,1,1,1,2};
 float $pow[] = {2,3};
 Add($nums);
 Subtract($nums);
