@@ -85,41 +85,42 @@ proc float Median(float $median[])
 
 proc string Mode(float $mode[])
 {
-int $count = 1;
-int $countMode = 1;
-string $result;
+	int $count = 1;
+	int $countMode = 1;
+	string $sresult;
 
-float $sorted[] = `sort $mode`;
-float $number = $sorted[0];
-float $mode = $number;
+	float $sorted[] = `sort $mode`;
+	float $number = $sorted[0];
+	float $curmode = $number;
 
-for ($i = 0; $i < size($sorted); $i++)
-{
-	if ($sorted[i] == $number) 
+	for ($i = 1; $i < size($sorted); $i++)
 	{
-		$count++;
-	}
-	else
-	{
-		if ($count > $countMode) 
+		if ($sorted[$i] == $number)
+		{
+			$count++;
+		}
+		else
+		{
+			if ($count > $countMode) 
 			{
 				$countMode = $count;
-				$mode = $number;
+				$curmode = $number;
 			}
 		$count = 1;
 		$number = $sorted[$i];
+		}
+	
 	}
-}
 
-if ($count == 1)
-{
-	$result = "There is more than one mode, or there is no mode.";
-}
-else
-{
-	$result = "The mode is " + $number;
-}
-return $result;	
+	if ($countMode == 1)
+	{
+		$sresult = "There is more than one mode, or there is no mode.";
+	}
+	else
+	{
+		$sresult = "The mode is " + $curmode;
+	}
+	return $sresult;
 }
 
 float $nums[] = {1,2,3,4,5,1,1,1,2};
@@ -131,3 +132,4 @@ Divide($nums);
 Power($pow);
 Mean($nums);
 Median($nums);
+Mode($nums);
