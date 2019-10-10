@@ -1,4 +1,52 @@
-proc float Add(float $add[])
+global proc float Calculator(int $function, float $nums[])
+{
+    float $result = 1;
+    
+	switch($function)
+	{
+		case 1:
+			print "Result of add function is:\n";
+			$result = Add($nums);
+			break;
+		case 2:
+			print "Result of subtract function is:\n";
+			$result = Subtract($nums);
+			break;
+		case 3:
+			print "Result of multiply function is:\n";
+			$result = Multiply($nums);
+			break;
+		case 4:
+			print "Result of divide function is:\n";
+			$result = Divide($nums);
+			break;
+		case 5:
+			print "Power function only uses the first two numbers in a float array.\n";
+			print "Result of power function is:\n";
+			$result = Power($nums);
+			break;
+		case 6:
+			print "Result of mean function is:\n";
+			$result = Mean($nums);
+			break;
+		case 7:
+			print "Result of median function is:\n";
+			$result = Median($nums);
+			break;
+		case 8:
+			print "Result of mode function is:\n";
+			$result = Mode($nums);
+			break;
+		default:
+			print "Function parameter must be from 1-8.";
+			break;
+	}
+	
+	return $result;
+}
+
+
+global proc float Add(float $add[])
 {
 	float $result = 0;
 	
@@ -9,7 +57,7 @@ proc float Add(float $add[])
 	return $result;
 }
 
-proc float Subtract(float $subtract[])
+global proc float Subtract(float $subtract[])
 {
 	float $result = $subtract[0];
 	
@@ -20,7 +68,7 @@ proc float Subtract(float $subtract[])
 	return $result;
 }
 
-proc float Multiply(float $multiply[])
+global proc float Multiply(float $multiply[])
 {
 	float $result = $multiply[0];
 	
@@ -31,18 +79,21 @@ proc float Multiply(float $multiply[])
 	return $result;
 }
 
-proc float Divide(float $divide[])
+global proc float Divide(float $divide[])
 {
 	float $result = $divide[0];
 	
 	for($i = 1; $i < size($divide); $i++)
 	{
-		$result /= $divide[$i];
+	    if($divide[$i] != 0)
+	    {
+	        $result /= $divide[$i];
+	    }		
 	}
 	return $result;
 }
 
-proc float Power(float $power[])
+global proc float Power(float $power[])
 {
 	float $result = $power[0];
 	float $exp = $power[1];
@@ -59,13 +110,13 @@ proc float Power(float $power[])
 	}
 }
 
-proc float Mean(float $mean[])
+global proc float Mean(float $mean[])
 {
 	float $result = Add($mean) / size($mean);
 	return $result;
 }
 
-proc float Median(float $median[])
+global proc float Median(float $median[])
 {
 	float $result;
 	float $sorted[] = `sort $median`;
@@ -83,15 +134,14 @@ proc float Median(float $median[])
 	return $result;
 }
 
-proc string Mode(float $mode[])
+global proc float Mode(float $mode[])
 {
 	int $count = 1;
 	int $countMode = 1;
-	string $sresult;
 
 	float $sorted[] = `sort $mode`;
 	float $number = $sorted[0];
-	float $curmode = $number;
+	float $result = $number;
 
 	for ($i = 1; $i < size($sorted); $i++)
 	{
@@ -104,7 +154,7 @@ proc string Mode(float $mode[])
 			if ($count > $countMode) 
 			{
 				$countMode = $count;
-				$curmode = $number;
+				$result = $number;
 			}
 		$count = 1;
 		$number = $sorted[$i];
@@ -112,24 +162,16 @@ proc string Mode(float $mode[])
 	
 	}
 
-	if ($countMode == 1)
-	{
-		$sresult = "There is more than one mode, or there is no mode.";
-	}
-	else
-	{
-		$sresult = "The mode is " + $curmode;
-	}
-	return $sresult;
+	return $result;
 }
 
-float $nums[] = {1,2,3,4,5,1,1,1,2};
-float $pow[] = {2,3};
-Add($nums);
-Subtract($nums);
-Multiply($nums);
-Divide($nums);
-Power($pow);
-Mean($nums);
-Median($nums);
-Mode($nums);
+float $nums[] = {2,3,3,4,5,1,1,1,2};
+
+Calculator(1, $nums);
+Calculator(2, $nums);
+Calculator(3, $nums);
+Calculator(4, $nums);
+Calculator(5, $nums);
+Calculator(6, $nums);
+Calculator(7, $nums);
+Calculator(8, $nums);
