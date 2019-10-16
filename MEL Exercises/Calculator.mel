@@ -1,44 +1,66 @@
 global proc float Calculator(int $function, float $nums[])
 {
     float $result = 1;
+	
+	string $numstring;
+	string $separatenumstring;
+	string $answer;
+	
+	for($i = 0; $i < size($nums); $i++)
+	{
+		$numstring += ("" + $nums[$i] + ", ");
+	}
+	
+	for($i = 1; $i < size($nums); $i++)
+	{
+		$separatenumstring += ("" + $nums[$i] + ", ");
+	}
     
 	switch($function)
 	{
 		case 1:
-			print "Result of add function is:\n";
+			$answer = ("The sum of " + $numstring + "is:\n");
+			print $answer;
 			$result = Add($nums);
 			break;
 		case 2:
-			print "Result of subtract function is:\n";
+			$answer = ("Subtracting " + $separatenumstring + " from " + $nums[0] + " is:\n");
+			print $answer;
 			$result = Subtract($nums);
 			break;
 		case 3:
-			print "Result of multiply function is:\n";
+			$answer = ("The result of multiplying " + $numstring + " is:\n");
+			print $answer;
 			$result = Multiply($nums);
 			break;
 		case 4:
-			print "Result of divide function is:\n";
+			$answer = ("Dividing " + $separatenumstring + " from " + $nums[0] + "is:\n");
+			print $answer;
 			$result = Divide($nums);
 			break;
 		case 5:
-			print "Power function only uses the first two numbers in a float array.\n";
-			print "Result of power function is:\n";
+			$answer = ("Power function only uses the first two numbers in a float array.\n");
+			print $answer;
 			$result = Power($nums);
 			break;
 		case 6:
-			print "Result of mean function is:\n";
+			$answer = ("The mean of " + $numstring + " is:\n");
+			print $answer;
 			$result = Mean($nums);
 			break;
 		case 7:
-			print "Result of median function is:\n";
+			$answer = ("The median of " + $numstring + " is:\n");
+			print $answer;
 			$result = Median($nums);
 			break;
 		case 8:
-			print "Result of mode function is:\n";
+			$answer = ("The mode of " + $numstring + " is:\n");
+			print $answer;
 			$result = Mode($nums);
 			break;
 		default:
-			print "Function parameter must be from 1-8.";
+			$answer = ("Function parameter must be from 1-8.");
+			print $answer;
 			break;
 	}
 	
