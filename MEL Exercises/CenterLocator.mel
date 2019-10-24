@@ -1,46 +1,64 @@
-Exercise
+// If you set GiveTotalCenter to anything but 0, it will give a single locator at the center of each object or selected component (verts, edges, etc.).
+// If you set MatchRotate to anything but 0, it will match the created locator's rotation to it's located object. If GiveTotalCenter is also on, this does nothing.
+// If this tool is used on verts, edges, or faces, it will not create the locator at the correct place unless their shape has had its transforms frozen.
 
-Use MEL to create a function that builds a locator at the center of the current selection(s).  Use parameters and arguments to accomplish specific functionality as outlined:
+global proc CenterLocator(int $GiveTotalCenter, int $MatchRotate)
+{
+	string $Selection[] = `ls -sl`;
+	string $Locators[];
+	float $CurrentPos[];
+	float $CurrentRot[];
+	string $CurrentName;
+	string $NewName;
+	string $CurrentNamePieces[];
+	int $ArgLength;
+	float $Total[];
+	float $BoundingBox[];
 
-    Create a locator at the combined center of all selected objects.
-    Create a locator at the center of each individual selection. This includes objects as well as components, joints, clusters, etc.
-    Include an optional parameter to match the locator orientation to the respective selection.
+	for ($i = 0; $i < size($Selection); $i++)
+	{
+		$CurrentName = $Selection[$i];
+		tokenize $CurrentName ".[]_: " $CurrentNamePieces;
+		$NewName = "";
+		for ($j = 0; $j < size($CurrentNamePieces); $j++)
+		{
+			$NewName += ($CurrentNamePieces[$j] + "_");
+		}
+		$CurrentName = ($NewName + "_Loc");	
+	
+		$BoundingBox = `xform -q -a -boundingBox $Selection[$i]`;
+		$CurrentPos[0] = ($BoundingBox[0] + $BoundingBox[3]) / 2;
+		$CurrentPos[1] = ($BoundingBox[1] + $BoundingBox[4]) / 2;
+		$CurrentPos[2] = ($BoundingBox[2] + $BoundingBox[5]) / 2;
+		spaceLocator -n $CurrentName;
+		xform -t $CurrentPos[0] $CurrentPos[1] $CurrentPos[2] $CurrentName;
+		
+		if ($MatchRotate != 0 && $GiveTotalCenter == 0)
+		{
+			$CurrentRot = `xform -q -ro $Selection[$i]`;
+			xform -ro $CurrentRot[0] $CurrentRot[1] $CurrentRot[2] $CurrentName;
+		}
+		
+		$Locators[$i] = $CurrentName;		
+	}
 
-Objectives
+	if ($GiveTotalCenter != 0)
+	{
+		for ($i = 0; $i < size($Locators); $i++)
+		{
+			$CurrentPos = `xform -q -t $Locators[$i]`;
+			$Total[0] += $CurrentPos[0];
+			$Total[1] += $CurrentPos[1];
+			$Total[2] += $CurrentPos[2];
+		}
+		
+		$Total[0] /= size($Locators);
+		$Total[1] /= size($Locators);
+		$Total[2] /= size($Locators);
+		spaceLocator -n "TrueCenter_Loc";
+		xform -t $Total[0] $Total[1] $Total[2] "TrueCenter_Loc";
+		delete $Locators;
+	}
+}
 
-    Familiarity with the xform and spaceLocator commands.
-    Familiarity and differences between world space and relative space.
-    Continued used of functions and parameters.
-    Problem-solving unique coding solutions to a visual process.
-
-
-xform
-
-spaceLocator
-	(This is the command for creating a locator ie spaceLocator -p 0 0 0;)
-
-bounding box
-
-midpoint formula
-
-getAttr
-
-setAttr
-
-
-get selection
-add each selected object to an array
-
-get xform boundingbox to get min and max values
-Add these vectors together, divide by 2
-
-
-
-or
-
-
-
-get selection
-get bounding box for each object
-get min and max values, add together, divide by 2
-place locator at each object
+CenterLocator(1, 0);
