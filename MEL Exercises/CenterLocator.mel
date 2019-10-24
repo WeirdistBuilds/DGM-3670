@@ -1,6 +1,6 @@
-// If you set GiveTotalCenter to anything but 0, it will give a single locator at the center of each object or selected component (verts, edges, etc.).
-// If you set MatchRotate to anything but 0, it will match the created locator's rotation to it's located object. If GiveTotalCenter is also on, this does nothing.
-// If this tool is used on verts, edges, or faces, it will not create the locator at the correct place unless their shape has had its transforms frozen.
+// If you set GiveTotalCenter to 0, it will give a locator at the center of each object or selected component (verts, edges, etc.).
+// If you set GiveTotalCenter to anything BUT 0, it will give a locator at the center of each object or selected component (verts, edges, etc.).
+// If you set MatchRotate to anything BUT 0, it will match the created locator's rotation to it's located object. This does nothing if GiveTotalCenter is "on".
 
 global proc CenterLocator(int $GiveTotalCenter, int $MatchRotate)
 {
@@ -12,53 +12,70 @@ global proc CenterLocator(int $GiveTotalCenter, int $MatchRotate)
 	string $NewName;
 	string $CurrentNamePieces[];
 	int $ArgLength;
-	float $Total[];
+	float $MinX[];
+	float $MinY[];
+	float $MinZ[];
+	float $MaxX[];
+	float $MaxY[];
+	float $MaxZ[];
 	float $BoundingBox[];
 
-	for ($i = 0; $i < size($Selection); $i++)
+	if ($GiveTotalCenter == 0)
 	{
-		$CurrentName = $Selection[$i];
-		tokenize $CurrentName ".[]_: " $CurrentNamePieces;
-		$NewName = "";
-		for ($j = 0; $j < size($CurrentNamePieces); $j++)
+		for ($i = 0; $i < size($Selection); $i++)
 		{
-			$NewName += ($CurrentNamePieces[$j] + "_");
-		}
-		$CurrentName = ($NewName + "_Loc");	
-	
-		$BoundingBox = `xform -q -a -boundingBox $Selection[$i]`;
-		$CurrentPos[0] = ($BoundingBox[0] + $BoundingBox[3]) / 2;
-		$CurrentPos[1] = ($BoundingBox[1] + $BoundingBox[4]) / 2;
-		$CurrentPos[2] = ($BoundingBox[2] + $BoundingBox[5]) / 2;
-		spaceLocator -n $CurrentName;
-		xform -t $CurrentPos[0] $CurrentPos[1] $CurrentPos[2] $CurrentName;
+			$CurrentName = $Selection[$i];
+			tokenize $CurrentName ".[]_: " $CurrentNamePieces;
+			$NewName = "";
+			for ($j = 0; $j < size($CurrentNamePieces); $j++)
+			{
+				$NewName += ($CurrentNamePieces[$j] + "_");
+			}
+			$CurrentName = ($NewName + "_Loc");	
 		
-		if ($MatchRotate != 0 && $GiveTotalCenter == 0)
-		{
-			$CurrentRot = `xform -q -ro $Selection[$i]`;
-			xform -ro $CurrentRot[0] $CurrentRot[1] $CurrentRot[2] $CurrentName;
+			$BoundingBox = `xform -q -ws -boundingBox $Selection[$i]`;
+			$CurrentPos[0] = ($BoundingBox[0] + $BoundingBox[3]) / 2;
+			$CurrentPos[1] = ($BoundingBox[1] + $BoundingBox[4]) / 2;
+			$CurrentPos[2] = ($BoundingBox[2] + $BoundingBox[5]) / 2;
+			spaceLocator -n $CurrentName;
+			xform -t $CurrentPos[0] $CurrentPos[1] $CurrentPos[2] $CurrentName;
+			
+			if ($MatchRotate != 0)
+			{
+				$CurrentRot = `xform -q -ro $Selection[$i]`;
+				xform -ro $CurrentRot[0] $CurrentRot[1] $CurrentRot[2] $CurrentName;
+			}
+			$Locators[$i] = $CurrentName;
 		}
-		
-		$Locators[$i] = $CurrentName;		
 	}
-
-	if ($GiveTotalCenter != 0)
+	
+	else
 	{
-		for ($i = 0; $i < size($Locators); $i++)
+		for ($i = 0; $i < size($Selection); $i++)
 		{
-			$CurrentPos = `xform -q -t $Locators[$i]`;
-			$Total[0] += $CurrentPos[0];
-			$Total[1] += $CurrentPos[1];
-			$Total[2] += $CurrentPos[2];
+			$BoundingBox = `xform -q -ws -boundingBox $Selection[$i]`;
+			$MinX[$i] = $BoundingBox[0];
+			$MinY[$i] = $BoundingBox[1];
+			$MinZ[$i] = $BoundingBox[2];
+			$MaxX[$i] = $BoundingBox[3];
+			$MaxY[$i] = $BoundingBox[4];
+			$MaxZ[$i] = $BoundingBox[5];
 		}
+		$MinX = `sort $MinX`;
+		$MinY = `sort $MinY`;
+		$MinZ = `sort $MinZ`;
+		$MaxX = `sort $MaxX`;
+		$MaxY = `sort $MaxY`;
+		$MaxZ = `sort $MaxZ`;
 		
-		$Total[0] /= size($Locators);
-		$Total[1] /= size($Locators);
-		$Total[2] /= size($Locators);
+		$Total[0] = ($MinX[0] + $MaxX[(size($MaxX) - 1)]) /2;
+		$Total[1] = ($MinY[0] + $MaxY[(size($MaxY) - 1)]) /2;
+		$Total[2] = ($MinZ[0] + $MaxZ[(size($MaxZ) - 1)]) /2;
 		spaceLocator -n "TrueCenter_Loc";
 		xform -t $Total[0] $Total[1] $Total[2] "TrueCenter_Loc";
-		delete $Locators;
 	}
+	
 }
 
 CenterLocator(1, 0);
+CenterLocator(0, 1);
