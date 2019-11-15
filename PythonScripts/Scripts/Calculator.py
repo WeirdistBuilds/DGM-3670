@@ -1,4 +1,31 @@
-def valuecheck(values):
+def calculator(operation, values):
+    """
+    Gets operation number and runs relevant function.
+    The operation numbers are as follows:
+    1: Add
+    2: Subtract
+    3: Multiply
+    4: Divide
+    5: Power
+    6: Mean
+    7: Median
+    8: Mode
+    input: int value between 1 and 8, list of values
+    return: float
+    """
+    return {
+        1: lambda: add(values),
+        2: lambda: subtract(values),
+        3: lambda: multiply(values),
+        4: lambda: divide(values),
+        5: lambda: power(values),
+        6: lambda: mean(values),
+        7: lambda: median(values),
+        8: lambda: mode(values)
+    }.get(operation, lambda: "Invalid operation number")()
+
+
+def value_check(values):
     """
     Checks values to ensure all values are of type float or int
     input: list
@@ -18,9 +45,10 @@ def add(values):
     return: float
     """
     result = 0
-    current = valuecheck(values)
+    current = value_check(values)
     for val in current:
         result += val
+    print str(values) + ' adds up to ' + str(result)
     return result
 
 
@@ -31,11 +59,11 @@ def subtract(values):
     return: float
     """
 
-    current = valuecheck(values)
+    current = value_check(values)
     result = current[0]
     for val in values[1:]:
         result -= val
-
+    print str(values[0]) + ' minus ' + str(values[1:]) + ' is ' + str(result)
     return result
 
 
@@ -45,10 +73,11 @@ def multiply(values):
     input: list of float/int values
     return: float
     """
-    current = valuecheck(values)
+    current = value_check(values)
     result = current[0]
     for val in current:
         result *= val
+    print str(values) + ' multiplies up to ' + str(result)
     return result
 
 
@@ -59,14 +88,14 @@ def divide(values):
     return: float
     """
 
-    current = valuecheck(values)
+    current = value_check(values)
     result = current[0]
     for val in values[1:]:
         if val != 0:
             result /= val
         else:
             print 'Error: Divide by zero'
-
+    print str(values[0]) + ' divided by ' + str(values[1:]) + ' is ' + str(result)
     return result
 
 
@@ -77,11 +106,14 @@ def power(values):
     return: float
     """
     import math
-    result = valuecheck(values)
-    if len(result) >= 2:
-        return math.pow(result[0], result[1])
+    current = value_check(values)
+    if len(current) >= 2:
+        result = math.pow(current[0], current[1])
+        print str(current[0]) + ' to the power of ' + str(current[1]) + ' is ' + str(result)
+        return result
     else:
         print 'Error: Not enough valid float/int values in list'
+        return 0
 
 
 def mean(values):
@@ -90,8 +122,10 @@ def mean(values):
     input: list of float/int values
     return: float
     """
-    current = valuecheck(values)
-    return add(current) / len(current)
+    current = value_check(values)
+    result = add(current) / len(current)
+    print 'The mean of ' + str(values) + ' is ' + str(result)
+    return result
 
 
 def median(values):
@@ -101,13 +135,15 @@ def median(values):
     return: float
     """
     import math
-    current = valuecheck(values)
+    current = value_check(values)
     current.sort()
     middle = int(math.floor(len(current) / 2))
     if len(current) % 2 == 0:
-        return (current[middle - 1] + current[middle]) / 2
+        result = (current[middle - 1] + current[middle]) / 2
     else:
-        return current[middle]
+        result = current[middle]
+    print 'The median of ' + str(current) + ' is ' + str(result)
+    return result
 
 
 def mode(values):
@@ -116,9 +152,9 @@ def mode(values):
     input: list of float/int values
     return: float
     """
-    current = valuecheck(values)
+    current = value_check(values)
     count = 1
-    modecount = 1
+    mode_count = 1
     current.sort()
     number = current[0]
     result = number
@@ -127,9 +163,14 @@ def mode(values):
         if val == number:
             count += 1
         else:
-            if count > modecount:
-                modecount = count
+            if count > mode_count:
+                mode_count = count
                 result = number
             count = 1
             number = val
-    return "The mode is " + str(result) + " which appears " + str(modecount) + " times."
+    if mode_count == 1:
+        print 'All numbers in this list appear only once'
+        return 0
+    else:
+        print 'The mode is ' + str(result) + ' which appears ' + str(mode_count) + ' times'
+        return result
