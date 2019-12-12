@@ -33,7 +33,7 @@ class ToolKit:
             current = self.value_check(values)
             for val in current:
                 result += val
-            print str(values) + ' adds up to ' + str(result)
+            print(str(values) + ' adds up to ' + str(result))
             return result
 
         def subtract(self, values):
@@ -47,7 +47,7 @@ class ToolKit:
             result = current[0]
             for val in values[1:]:
                 result -= val
-            print str(values[0]) + ' minus ' + str(values[1:]) + ' is ' + str(result)
+            print(str(values[0]) + ' minus ' + str(values[1:]) + ' is ' + str(result))
             return result
 
         def multiply(self, values):
@@ -60,7 +60,7 @@ class ToolKit:
             result = current[0]
             for val in current:
                 result *= val
-            print str(values) + ' multiplies up to ' + str(result)
+            print(str(values) + ' multiplies up to ' + str(result))
             return result
 
         def divide(self, values):
@@ -76,8 +76,8 @@ class ToolKit:
                 if val != 0:
                     result /= val
                 else:
-                    print 'Error: Divide by zero'
-            print str(values[0]) + ' divided by ' + str(values[1:]) + ' is ' + str(result)
+                    print('Error: Divide by zero')
+            print(str(values[0]) + ' divided by ' + str(values[1:]) + ' is ' + str(result))
             return result
 
         def power(self, values):
@@ -90,10 +90,10 @@ class ToolKit:
             current = self.value_check(values)
             if len(current) >= 2:
                 result = math.pow(current[0], current[1])
-                print str(current[0]) + ' to the power of ' + str(current[1]) + ' is ' + str(result)
+                print(str(current[0]) + ' to the power of ' + str(current[1]) + ' is ' + str(result))
                 return result
             else:
-                print 'Error: Not enough valid float/int values in list'
+                print('Error: Not enough valid float/int values in list')
                 return 0
 
         def mean(self, values):
@@ -104,7 +104,7 @@ class ToolKit:
             """
             current = self.value_check(values)
             result = self.add(current) / len(current)
-            print 'The mean of ' + str(values) + ' is ' + str(result)
+            print('The mean of ' + str(values) + ' is ' + str(result))
             return result
 
         def median(self, values):
@@ -121,7 +121,7 @@ class ToolKit:
                 result = (current[middle - 1] + current[middle]) / 2
             else:
                 result = current[middle]
-            print 'The median of ' + str(current) + ' is ' + str(result)
+            print('The median of ' + str(current) + ' is ' + str(result))
             return result
 
         def mode(self, values):
@@ -147,15 +147,20 @@ class ToolKit:
                     count = 1
                     number = val
             if mode_count == 1:
-                print 'All numbers in this list appear only once'
+                print('All numbers in this list appear only once')
                 return 0
             else:
-                print 'The mode is ' + str(result) + ' which appears ' + str(mode_count) + ' times'
+                print('The mode is ' + str(result) + ' which appears ' + str(mode_count) + ' times')
                 assert isinstance(result, object)
                 return result
 
 
 def center_locator(give_individual_centers):
+    """
+    Finds the median of a list of values
+    input: boolean
+    return: none
+    """
     sels = cmds.ls(sl=True)
     locators = list()
     min_x = list()
@@ -215,6 +220,11 @@ def center_locator(give_individual_centers):
 
 
 def color_changer(color):
+    """
+    Changes color of object to specified color
+    input: string (yellow, red, blue, green, purple, orange, black, or white)
+    return: none
+    """
     this_color = {
         'yellow': lambda: 16,
         'red': lambda: 12,
@@ -233,7 +243,12 @@ def color_changer(color):
         cmds.setAttr('%s.overrideColor' % shape, this_color)
 
 
-def random_spawn(amount, grow_flag, move_range, scale_lower, scale_upper):
+def random_spawner(amount, grow_flag, move_range, scale_lower, scale_upper):
+    """
+    Randomly places duplicates of selected object around object
+    input: int, boolean, float, float, float
+    return: none
+    """
     spawn_num = 1
     selection = cmds.ls(sl=True)
     polygons = cmds.filterExpand(selection, sm=12)
@@ -281,12 +296,17 @@ def random_spawn(amount, grow_flag, move_range, scale_lower, scale_upper):
     cmds.group(polygons, name='Geometry')
 
 
-def sequential_rename(name_format):
+def sequential_renamer(name_format):
+    """
+    Renames selected objects in sequential order
+    input: string, with # signs in place of desired numbers
+    return: none
+    """
     selection = cmds.ls(sl=True)
     polygons = cmds.filterExpand(selection, sm=12)
     arg_length = len(name_format)
     tokens = name_format.split('#')
-    print tokens
+    print(tokens)
     tokens_length = len(tokens[0]) + len(tokens[len(tokens) - 1])
     num_length = arg_length - tokens_length
 
@@ -306,6 +326,11 @@ def sequential_rename(name_format):
 
 
 def control_maker(color):
+    """
+    Creates control circle on selected objects
+    input: string (yellow, red, blue, green, purple, orange, black, or white)
+    return: none
+    """
     objects = center_locator(True, True)
     for obj in objects:
         split_name = obj.split('_')

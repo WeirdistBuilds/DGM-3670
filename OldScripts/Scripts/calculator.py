@@ -25,7 +25,7 @@ class Calculator:
         current = self.value_check(values)
         for val in current:
             result += val
-        print str(values) + ' adds up to ' + str(result)
+        print(str(values) + ' adds up to ' + str(result))
         return result
 
     def subtract(self, values):
@@ -39,7 +39,7 @@ class Calculator:
         result = current[0]
         for val in values[1:]:
             result -= val
-        print str(values[0]) + ' minus ' + str(values[1:]) + ' is ' + str(result)
+        print(str(values[0]) + ' minus ' + str(values[1:]) + ' is ' + str(result))
         return result
 
     def multiply(self, values):
@@ -52,7 +52,7 @@ class Calculator:
         result = current[0]
         for val in current:
             result *= val
-        print str(values) + ' multiplies up to ' + str(result)
+        print(str(values) + ' multiplies up to ' + str(result))
         return result
 
     def divide(self, values):
@@ -68,8 +68,8 @@ class Calculator:
             if val != 0:
                 result /= val
             else:
-                print 'Error: Divide by zero'
-        print str(values[0]) + ' divided by ' + str(values[1:]) + ' is ' + str(result)
+                print('Error: Divide by zero')
+        print(str(values[0]) + ' divided by ' + str(values[1:]) + ' is ' + str(result))
         return result
 
     def power(self, values):
@@ -82,10 +82,10 @@ class Calculator:
         current = self.value_check(values)
         if len(current) >= 2:
             result = math.pow(current[0], current[1])
-            print str(current[0]) + ' to the power of ' + str(current[1]) + ' is ' + str(result)
+            print(str(current[0]) + ' to the power of ' + str(current[1]) + ' is ' + str(result))
             return result
         else:
-            print 'Error: Not enough valid float/int values in list'
+            print('Error: Not enough valid float/int values in list')
             return 0
 
     def mean(self, values):
@@ -96,7 +96,7 @@ class Calculator:
         """
         current = self.value_check(values)
         result = self.add(current) / len(current)
-        print 'The mean of ' + str(values) + ' is ' + str(result)
+        print('The mean of ' + str(values) + ' is ' + str(result))
         return result
 
     def median(self, values):
@@ -113,7 +113,7 @@ class Calculator:
             result = (current[middle - 1] + current[middle]) / 2
         else:
             result = current[middle]
-        print 'The median of ' + str(current) + ' is ' + str(result)
+        print('The median of ' + str(current) + ' is ' + str(result))
         return result
 
     def mode(self, values):
@@ -139,8 +139,8 @@ class Calculator:
                 count = 1
                 number = val
         if mode_count == 1:
-            print 'All numbers in this list appear only once'
+            print('All numbers in this list appear only once')
             return 0
         else:
-            print 'The mode is ' + str(result) + ' which appears ' + str(mode_count) + ' times'
+            print('The mode is ' + str(result) + ' which appears ' + str(mode_count) + ' times')
             return result

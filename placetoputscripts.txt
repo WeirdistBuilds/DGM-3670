@@ -5,5 +5,5 @@
 	then you'd write in a comment, so Clayton can copy/paste commands
 
 import toolbox
-myTB = toolbox.Toolbox()
+myTB = toolBox.Toolbox()
 myTB.create()

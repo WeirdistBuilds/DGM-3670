@@ -1,7 +1,7 @@
 import maya.cmds as cmds
 
 
-class ToolBox():
+class ToolBox:
     def __init__(self):
         self.window_name = 'kh_toolbox'
 
@@ -30,12 +30,8 @@ class ToolBox():
             cmds.deleteUI(self.window_name)
 
     def ball_button(self):
-        from tools import ball
-        ball()
 
     def select_button(self):
-        from tools import select_all
-        select_all()
 
     def color_button(self):
         value = cmds.textField(self.color_field, query=True, text=True)
